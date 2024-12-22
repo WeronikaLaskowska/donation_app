@@ -32,7 +32,7 @@ const homeStyles = StyleSheet.create({
   badgePositioning: {
     position: 'absolute',
     top: 0,
-    left: 0,
+    left: 10,
   },
 
   homeWrapper: {
@@ -72,6 +72,24 @@ const homeStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
+  },
+
+  donationScreenImage: {
+    width: 340,
+    height: 240,
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  donationDescription: {
+    fontSize: 14,
+    fontFamily: getFontFamily('Montserrat', '400'),
+    color: '#000000',
+    marginBottom: 5,
+    marginTop: 10,
+  },
+  donateButtonPositioning: {
+    position: 'static',
+    bottom: 0,
   },
 });
 

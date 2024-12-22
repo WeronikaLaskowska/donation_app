@@ -26,7 +26,6 @@ const componentStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: verticalScale(10),
-    marginHorizontal: horizontalScale(10),
     width: 85,
   },
   disabled: {
@@ -58,6 +57,16 @@ const componentStyles = StyleSheet.create({
     height: '100%',
     width: '90%',
     fontFamily: getFontFamily('Montserrat', '500'),
+  },
+  returnBtn: {
+    marginBottom: 10,
+    width: 44,
+    height: 44,
+    backgroundColor: '#FAFAFA',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 50,
   },
 });
 

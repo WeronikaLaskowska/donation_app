@@ -27,24 +27,29 @@ const DonationsList = ({navigation}: {navigation: NavigationProp<any>}) => {
   return (
     <SafeAreaView style={[globalStyles.container]}>
       <View style={style.donationsWrapper}>
-        {donationItems.map((donation, index) => (
-          <SingleDonationItem
-            onPress={() => {
-              dispatch(updateSelectedDonationId(donation.donationItemId));
-              navigation.navigate(Routes.Donation);
-            }}
-            key={index}
-            donation={{
-              price: donation.price,
-              tag:
-                categories.categories.find(
-                  el => el.categoryId === categories.selectedCategoryId,
-                )?.name ?? '',
-              title: donation.name,
-              picture: donation.image,
-            }}
-          />
-        ))}
+        {donationItems.map((donation, index) => {
+          const categoryName =
+            categories.categories.find(
+              el => el.categoryId === categories.selectedCategoryId,
+            )?.name ?? '';
+          return (
+            <SingleDonationItem
+              onPress={() => {
+                dispatch(updateSelectedDonationId(donation.donationItemId));
+                navigation.navigate(Routes.Donation, {
+                  category: categoryName,
+                });
+              }}
+              key={index}
+              donation={{
+                price: donation.price,
+                tag: categoryName,
+                title: donation.name,
+                picture: donation.image,
+              }}
+            />
+          );
+        })}
       </View>
     </SafeAreaView>
   );
