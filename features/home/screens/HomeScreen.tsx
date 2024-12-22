@@ -1,28 +1,108 @@
-import React from 'react';
-import {SafeAreaView, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import globalStyles from '../../../assets/styles/globals';
-import SearchInput from '../../../components/SearchInput';
-import SingleDonationItem from '../components/SingleDonationItem';
 import Header from '../../../components/Header';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../redux/store';
-import Button from '../../../components/Button';
-import {updateFirstName} from '../../../redux/reducers/User';
-function Home(): React.JSX.Element {
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
+import style from '../style';
+import {updateSelectedCategoryId} from '../../../redux/reducers/Categories';
+import SearchInput from '../../../components/SearchInput';
+import Tab from '../../../components/Tab';
+import {CategoryItem} from '../../../models/category';
+import DonationsList from '../components/DonationsList';
+
+function Home({navigation}): React.JSX.Element {
   const user = useSelector((state: RootState) => state.user);
+  const categories = useSelector((state: RootState) => state.categories);
+  const donations = useSelector((state: RootState) => state.donations);
   const dispatch = useDispatch();
-  console.log(user);
+  const [categoryPage, setCategoryPage] = useState(1);
+  const [categoryList, setCategoryList] = useState<CategoryItem[]>([]);
+  const limit = 4;
+
+  const pagination = (items: CategoryItem[], page: number, limit: number) => {
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+
+    if (startIndex >= items.length) {
+      return [];
+    }
+
+    return items.slice(startIndex, endIndex);
+  };
+
+  useEffect(() => {
+    setCategoryList(pagination(categories.categories, categoryPage, limit));
+    setCategoryPage(categoryPage + 1);
+  }, []);
+
   return (
     <SafeAreaView style={[globalStyles.container]}>
-      <Header size={24} text={`${user.firstName} ${user.lastName}`} />
-      <Button
-        text="Press me to change name"
-        onPress={() => {
-          dispatch(updateFirstName({firstName: 'Piotr'}));
-        }}
-      />
-      <SearchInput onSearch={() => {}} />
-      <View
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={style.homeWrapper}>
+          <View style={style.headerContainer}>
+            <View>
+              <Text style={style.smallDashboardText}>Hello,</Text>
+              <Header
+                size={24}
+                text={`${user.firstName} ${user.lastName.substring(0, 1)}. 👋`}
+              />
+            </View>
+            <Image
+              style={style.profileImage}
+              resizeMode="contain"
+              source={{uri: user.profileImage}}
+            />
+          </View>
+          <View style={style.searchBarWrapper}>
+            <SearchInput onSearch={() => {}} />
+          </View>
+
+          <TouchableOpacity>
+            <Image
+              style={style.bannerImage}
+              resizeMode="contain"
+              source={require('./../../../assets/highlighted_image.png')}
+            />
+          </TouchableOpacity>
+          <View style={{marginTop: 20}}>
+            <Header size={18} text="Select Category" />
+
+            <FlatList
+              onEndReachedThreshold={0.5}
+              onEndReached={() => {
+                const newData = pagination(
+                  categories.categories,
+                  categoryPage,
+                  limit,
+                );
+                if (newData.length > 0) {
+                  setCategoryList([...categoryList, ...newData]);
+                  setCategoryPage(categoryPage + 1);
+                }
+              }}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={categoryList}
+              renderItem={({item}) => (
+                <Tab
+                  disabled={item.categoryId !== categories.selectedCategoryId}
+                  key={item.categoryId}
+                  text={item.name}
+                  onPress={() => {
+                    dispatch(updateSelectedCategoryId(item.categoryId));
+                  }}
+                />
+              )}
+            />
+          </View>
+
+          <DonationsList navigation={navigation} />
+        </View>
+      </ScrollView>
+      {/* <SearchInput onSearch={() => {}} /> */}
+      {/* <View
         style={{
           display: 'flex',
           flexDirection: 'row',
@@ -65,7 +145,7 @@ function Home(): React.JSX.Element {
               'https://images.unsplash.com/photo-1732647169576-49abfdef3348?q=80&w=1979&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
           }}
         />
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 }

@@ -4,3 +4,12 @@ export interface Donation {
   tag: string;
   picture?: string;
 }
+
+export interface DonationObj {
+  name: string;
+  description: string;
+  image: string;
+  donationItemId: number;
+  categoryIds: number[];
+  price: string;
+}

@@ -14,8 +14,7 @@ const Tab = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[style.button, disabled ? style.disabled : null]}
-      disabled={disabled}>
+      style={[style.button, disabled ? style.disabled : null]}>
       <Text style={style.text}>{text}</Text>
     </TouchableOpacity>
   );
