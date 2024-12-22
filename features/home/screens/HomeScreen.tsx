@@ -3,10 +3,24 @@ import {SafeAreaView, View} from 'react-native';
 import globalStyles from '../../../assets/styles/globals';
 import SearchInput from '../../../components/SearchInput';
 import SingleDonationItem from '../components/SingleDonationItem';
-
+import Header from '../../../components/Header';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../../redux/store';
+import Button from '../../../components/Button';
+import {updateFirstName} from '../../../redux/reducers/User';
 function Home(): React.JSX.Element {
+  const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+  console.log(user);
   return (
     <SafeAreaView style={[globalStyles.container]}>
+      <Header size={24} text={`${user.firstName} ${user.lastName}`} />
+      <Button
+        text="Press me to change name"
+        onPress={() => {
+          dispatch(updateFirstName({firstName: 'Piotr'}));
+        }}
+      />
       <SearchInput onSearch={() => {}} />
       <View
         style={{
