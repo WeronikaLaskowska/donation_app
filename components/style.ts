@@ -68,6 +68,19 @@ const componentStyles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 50,
   },
+
+  inputLabel: {
+    fontFamily: getFontFamily('Montserrat', '400'),
+    color: '#36455A',
+    fontSize: 12,
+  },
+  inputStyle: {
+    borderBottomWidth: 1,
+    borderColor: '#e7e7e7',
+    color: '#022150',
+    marginTop: 3,
+    minWidth: 320,
+  },
 });
 
 export default componentStyles;
