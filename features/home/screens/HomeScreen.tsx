@@ -11,6 +11,8 @@ import SearchInput from '../../../components/SearchInput';
 import Tab from '../../../components/Tab';
 import {CategoryItem} from '../../../models/category';
 import DonationsList from '../components/DonationsList';
+import {resetToInitialState} from '../../../redux/reducers/User';
+import {logout} from '../../../api/user';
 
 function Home({navigation}): React.JSX.Element {
   const user = useSelector((state: RootState) => state.user);
@@ -35,6 +37,7 @@ function Home({navigation}): React.JSX.Element {
   useEffect(() => {
     setCategoryList(pagination(categories.categories, categoryPage, limit));
     setCategoryPage(categoryPage + 1);
+    // dispatch(resetToInitialState());
   }, []);
 
   return (
@@ -44,16 +47,29 @@ function Home({navigation}): React.JSX.Element {
           <View style={style.headerContainer}>
             <View>
               <Text style={style.smallDashboardText}>Hello,</Text>
-              <Header
-                size={24}
-                text={`${user.firstName} ${user.lastName.substring(0, 1)}. 👋`}
-              />
+              <Header size={24} text={`${user.displayName}. 👋`} />
             </View>
             <Image
               style={style.profileImage}
               resizeMode="contain"
               source={{uri: user.profileImage}}
             />
+          </View>
+          <View
+            style={{
+              marginLeft: 'auto',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
+            }}>
+            <TouchableOpacity
+              style={{width: 45}}
+              onPress={async () => {
+                logout();
+                dispatch(resetToInitialState());
+              }}>
+              <Header size={12} text="Logout" />
+            </TouchableOpacity>
           </View>
           <View style={style.searchBarWrapper}>
             <SearchInput onSearch={() => {}} />

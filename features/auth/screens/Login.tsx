@@ -12,10 +12,15 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import {getFontFamily} from '../../../assets/fonts/helper';
 import {Routes} from '../../../navigation/Routes';
+import {login} from '../../../api/user';
+import {useDispatch} from 'react-redux';
+import {logIn} from '../../../redux/reducers/User';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const [error, setError] = useState<string>();
+  const dispatch = useDispatch();
   return (
     <SafeAreaView style={globalStyles.container}>
       <ScrollView
@@ -45,8 +50,31 @@ const Login = ({navigation}) => {
             placeholder="Enter your password"
             onChange={setPassword}
           />
-
-          <Button onPress={() => {}} text="Login" />
+          {error && (
+            <Text
+              style={{
+                fontFamily: getFontFamily('Montserrat', '600'),
+                color: 'red',
+              }}>
+              {error}
+            </Text>
+          )}
+          <Button
+            disabled={
+              !email || !password || email?.length < 5 || password?.length < 5
+            }
+            onPress={async () => {
+              let user = await login(email as string, password as string);
+              if (!user.status) {
+                setError(user.error);
+                return;
+              }
+              dispatch(logIn(user.data));
+              navigation.navigate(Routes.Home);
+              setEmail('');
+            }}
+            text="Login"
+          />
           <TouchableOpacity
             onPress={() => {
               navigation.navigate(Routes.Registration);

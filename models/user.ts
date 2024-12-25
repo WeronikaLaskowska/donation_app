@@ -1,6 +1,8 @@
 export interface UserObj {
-  firstName: string;
-  lastName: string;
+  displayName: string;
+  email: string;
+  isLoggedIn: boolean;
   id: number;
   profileImage: string;
+  tokeen: string;
 }
