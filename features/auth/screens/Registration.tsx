@@ -11,10 +11,10 @@ import Input from '../../../components/Input';
 import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 import {getFontFamily} from '../../../assets/fonts/helper';
-import {Routes} from '../../../navigation/Routes';
 
-const Login = ({navigation}) => {
+const Registration = () => {
   const [email, setEmail] = useState<string>();
+  const [name, setName] = useState<string>();
   const [password, setPassword] = useState<string>();
   return (
     <SafeAreaView style={globalStyles.container}>
@@ -31,7 +31,13 @@ const Login = ({navigation}) => {
             justifyContent: 'center',
             marginHorizontal: 20,
           }}>
-          <Header size={24} text="Welcome Back" />
+          <Header size={24} text="Hello and Welcome!" />
+          <Input
+            keyboardType={'email-address'}
+            label="First & Last Name"
+            placeholder="Enter your name"
+            onChange={setName}
+          />
           <Input
             keyboardType={'email-address'}
             label="Email"
@@ -45,26 +51,11 @@ const Login = ({navigation}) => {
             placeholder="Enter your password"
             onChange={setPassword}
           />
-
-          <Button onPress={() => {}} text="Login" />
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate(Routes.Registration);
-            }}>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: '#156CF7',
-                fontSize: 16,
-                fontFamily: getFontFamily('Montserrat', '700'),
-              }}>
-              Don’t have an account?
-            </Text>
-          </TouchableOpacity>
+          <Button onPress={() => {}} text="Register" />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Login;
+export default Registration;

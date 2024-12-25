@@ -1,7 +1,5 @@
 import React, {useCallback, useRef, useState} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faSearch} from '@fortawesome/free-solid-svg-icons';
-import {Pressable, TextInput} from 'react-native-gesture-handler';
+import {TextInput} from 'react-native-gesture-handler';
 import style from './style';
 import {KeyboardTypeOptions, Text, View} from 'react-native';
 const Input = ({
@@ -19,13 +17,16 @@ const Input = ({
 }) => {
   const ref = useRef(null);
   const [postText, setPostText] = useState('');
+
   const handleFocus = () => {
     ref.current?.focus();
   };
-  const onChangeText = useCallback(text => {
+
+  const onChangeText = useCallback((text: string) => {
     setPostText(text);
     onChange(text);
   }, []);
+
   return (
     <View>
       <Text style={style.inputLabel}>{label}</Text>
